@@ -1,4 +1,5 @@
 from conan import ConanFile
+import conan.tools.files
 from conan.tools.cmake import CMake, cmake_layout
 
 
@@ -8,10 +9,13 @@ class SPIRVCROSSConan(ConanFile):
 
     generators = "CMakeToolchain"
 
+    def export_sources(self):
+        conan.tools.files.copy(self, "*", self.recipe_folder, self.export_sources_folder)
+
     def layout(self):
         cmake_layout(self)
 
-    def package(self):
+    def build(self):
         cmake = CMake(self)
         cmake.configure()
         cmake.build()
